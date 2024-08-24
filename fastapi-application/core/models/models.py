@@ -9,7 +9,6 @@ from .base import Base
 class Category(Base):
     __tablename__ = 'categories'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False, index=True)
 
     products: Mapped[list['Product']] = relationship('Product', back_populates='category')
@@ -18,7 +17,6 @@ class Category(Base):
 class Product(Base):
     __tablename__ = 'products'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False, index=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     price: Mapped[float] = mapped_column(Float, nullable=False)
