@@ -7,8 +7,15 @@ class RunConfig:
     port: int = 8000
 
 
+class ApiV1Prefix(BaseModel):
+    prefix: str = '/v1'
+    products: str = '/products'
+    categories: str = '/categories'
+
+
 class ApiPrefix(BaseModel):
     prefix: str = '/api'
+    v1: ApiV1Prefix = ApiV1Prefix()
 
 
 class DatabaseConfig(BaseModel):
