@@ -3,12 +3,24 @@ from collections.abc import Sequence
 from core.models import Category, Product
 from core.schemas.products import ProductCreate, ProductUpdate
 from fastapi import HTTPException
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def get_all_products(session: AsyncSession) -> Sequence[Product]:
-    stmt = select(Product).order_by(Product.id)
+async def get_filtered_products(
+    session: AsyncSession, name: str = None, category_id: int = None, min_price: float = None, max_price: float = None
+) -> Sequence[Product]:
+    filters = []
+    if name:
+        filters.append(Product.name.ilike(f'%{name}%'))
+    if category_id:
+        filters.append(Product.category_id == category_id)
+    if min_price is not None:
+        filters.append(Product.price >= min_price)
+    if max_price is not None:
+        filters.append(Product.price <= max_price)
+
+    stmt = select(Product).where(and_(*filters)).order_by(Product.id)
     result = await session.scalars(stmt)
     return result.all()
 
