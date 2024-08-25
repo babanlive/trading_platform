@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def get_categories(session: AsyncSession) -> Sequence[Category]:
+async def get_all_categories(session: AsyncSession) -> Sequence[Category]:
     stmt = select(Category).order_by(Category.id)
     result = await session.scalars(stmt)
     return result.all()

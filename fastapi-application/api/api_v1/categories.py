@@ -10,7 +10,7 @@ router = APIRouter(tags=['Categories'])
 
 @router.get('', response_model=list[CategoryRead])
 async def get_categories(session: AsyncSession = Depends(db_helper.session_getter)):  # noqa: B008
-    return await crud_categories.get_categories(session=session)
+    return await crud_categories.get_all_categories(session=session)
 
 
 @router.post('', response_model=CategoryRead)
