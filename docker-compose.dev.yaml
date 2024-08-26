@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  db:
+    restart: always
+    container_name: pg
+    image: postgres:latest
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: trading_platform
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    network_mode: host
+  
+  web:
+    build:
+      target: dev
+      context: .
+      dockerfile: ./Dockerfile
+    image: app/app_dev
+    container_name: app_fastapi
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    working_dir: /app/fastapi-application
+    command: ["uvicorn", "main:main_app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    network_mode: host
