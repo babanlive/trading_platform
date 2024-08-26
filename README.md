@@ -26,7 +26,7 @@
 
 1. Клонируйте репозиторий и перейдите в папку проекта:
 ```shell
-git clone git@github.com:babanlive/trading_platform.git
+git clone git@github.com:babanlive/trading_platform.git && cd trading_platform
 ```
 
 2. Создание файла .env
@@ -84,3 +84,26 @@ curl -X 'POST' \
   "name": "Fruits"
 }'
 ```
+
+- Добавление продукта
+
+```shell
+curl -X 'POST' \                                    
+  'http://127.0.0.1:8000/api/v1/products' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Banana",
+  "description": "price for 1kg bananas",
+  "price": 175,
+  "image_url": "http://example_picture.com/banana.png",
+  "category_id": 1
+}'
+```
+- Получение продуктов с фильтрацией.
+
+```shell
+curl -X 'GET' \
+  'http://127.0.0.1:8000/api/v1/products?category_id=3&min_price=100' \
+  -H 'accept: application/json'
+  ```
