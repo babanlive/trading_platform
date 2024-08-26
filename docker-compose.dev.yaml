@@ -7,12 +7,6 @@ services:
     image: postgres:latest
     env_file:
       - .env
-    environment:
-      POSTGRES_DB: trading_platform
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
     network_mode: host
   
   web:
