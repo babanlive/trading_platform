@@ -14,6 +14,13 @@ async def get_all_categories(session: AsyncSession) -> Sequence[Category]:
 
 
 async def create_category(session: AsyncSession, category_create: CategoryCreate) -> Category:
+    stmt = select(Category).where(Category.name == category_create.name)
+    result = await session.execute(stmt)
+    existing_category = result.scalar()
+
+    if existing_category:
+        raise HTTPException(status_code=400, detail='Category already exists')
+
     category = Category(**category_create.model_dump())
     session.add(category)
     await session.commit()

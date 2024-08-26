@@ -32,13 +32,19 @@ async def get_product_by_id(session: AsyncSession, product_id: int) -> Product |
 
 
 async def create_product(session: AsyncSession, product_create: ProductCreate) -> Product:
+    product_name = product_create.name
     category_id = product_create.category_id
-    category_stmt = select(Category).where(Category.id == category_id)
-    category_result = await session.scalars(category_stmt)
-    category = category_result.first()
+    category = await session.get(Category, category_id)
 
     if not category:
         raise HTTPException(status_code=400, detail=f'Category with id {category_id} does not exist')
+
+    stmt = select(Product).filter(Product.name == product_name, Product.category_id == category_id)
+    result = await session.execute(stmt)
+    existing_product = result.scalar()
+
+    if existing_product:
+        raise HTTPException(status_code=400, detail='Product already exists in this category')
 
     product = Product(**product_create.model_dump())
     session.add(product)

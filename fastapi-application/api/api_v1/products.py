@@ -12,7 +12,7 @@ router = APIRouter(tags=['Products'])
 async def get_products(
     session: AsyncSession = Depends(db_helper.session_getter),  # noqa: B008
     name: str | None = Query(None),
-    category_id: str | None = Query(None),
+    category_id: float | None = Query(None),
     min_price: float | None = Query(None),
     max_price: float | None = Query(None),
 ) -> list[ProductRead]:
