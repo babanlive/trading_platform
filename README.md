@@ -16,8 +16,10 @@
 
 - Python 3.12
 - FastAPI
-- Posgres
-- Docker (Запуск проекта и базы данных в контерйнере)
+- Pre-commit
+- Ruff
+- Postgres
+- Docker
 
 
 ## Установка и запуск проекта
@@ -28,7 +30,7 @@ git clone git@github.com:babanlive/trading_platform.git
 ```
 
 2. Создание файла .env
-- Создайте в папке `config` файл `.env` согласно образцу [env_example](config/.env.example)
+- Создайте в папке приложения файл `.env` согласно образцу [.env_example](.env.example)
 
 3. Запуск проекта через Docker
 - Для запуска в режиме разработки выполните команду:
@@ -40,12 +42,19 @@ docker-compose -f docker-compose.dev.yaml up --build
 ```shell
 docker-compose -f docker-compose.prod.yaml up --build
 ```
+4. Выполните миграции
+```shell
+docker exec -it app_fastapi poetry run alembic upgrade head
+```
 
- ##Работа с API:
+ ## Работа с API:
+- Базовый URL
 
+API доступно по адресу:
+```shell
+http://127.0.0.1:8000/api/v1/
+```
 - GET /products — Получение списка продуктов с поддержкой фильтрации.
-
-- GET /products/{product_id} — Получение продукта по ID.
 
 - POST /products — Добавление нового продукта.
 
@@ -53,10 +62,25 @@ docker-compose -f docker-compose.prod.yaml up --build
 
 - DELETE /products/{product_id} — Удаление продукта.
 
-- GET /categories — Получение списка категорий.
 
-- GET /categories/{category_id} — Получение категории по ID.
+- GET categories — Получение списка категорий.
 
 - POST /categories — Добавление новой категории.
 
-- DELETE /categories/{category_id} — Удаление категории.
+- PUT /categories/{category_id} — Обновление информации о продукте.
+
+- DELETE categories/{category_id} — Удаление категории.
+
+## Пример запроса
+
+- Создание категории
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8000/api/v1/categories' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Fruits"
+}'
+```
