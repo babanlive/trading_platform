@@ -1,14 +1,15 @@
-version: '3.9'
-
 services:
-  db:
+  pg:
+    image: postgres
+    container_name: pg_db
     restart: always
-    container_name: pg
-    image: postgres:latest
     env_file:
       - .env
-    network_mode: host
-  
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
   web:
     build:
       target: dev
@@ -17,11 +18,15 @@ services:
     image: app/app_dev
     container_name: app_fastapi
     depends_on:
-      - db
+      - pg
     volumes:
       - .:/app
-    env_file:
-      - .env
-    working_dir: /app/fastapi-application
+    working_dir: /app/products-app
+    ports:
+      - 8000:8000
     command: ["uvicorn", "main:main_app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-    network_mode: host
+    networks:
+      - app-network
+
+networks:
+  app-network:
