@@ -48,7 +48,7 @@ def event_loop():
 
 @pytest.fixture(scope='session')
 async def ac() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=main_app, base_url='http://127.0.0.1:8000') as ac:
+    async with AsyncClient(app=main_app, base_url='http://localhost:8000') as ac:
         yield ac
 
 
