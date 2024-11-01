@@ -31,13 +31,9 @@ git clone git@github.com:babanlive/trading_platform.git && cd trading_platform
 3. Запуск проекта через Docker
 - Для запуска в режиме разработки выполните команду:
 ```shell
-docker-compose -f docker-compose.dev.yaml up --build
+docker-compose -f docker compose.dev.yaml up --build
 ```
 
-- Для запуска в режиме производства выполните команду:
-```shell
-docker-compose -f docker-compose.prod.yaml up --build
-```
 4. Выполните миграции
 ```shell
 docker exec -it app_fastapi poetry run alembic upgrade head
@@ -103,3 +99,16 @@ curl -X 'GET' \
   'http://127.0.0.1:8000/api/v1/products?category_id=3&min_price=100' \
   -H 'accept: application/json'
   ```
+  
+  ## Тесты
+1. Создайте тестовую БД
+
+    ```shell
+    docker exec -it pg_db psql -U user -d postgres -c "CREATE DATABASE test_db;"
+    ```
+
+2. Запустите тесты:
+
+    ```shell
+    docker exec -it app_fastapi poetry run pytest -v tests/ --disable-warnings
+    ```
