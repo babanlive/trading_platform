@@ -29,7 +29,7 @@ async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
 main_app.dependency_overrides[db_helper.session_getter] = override_get_async_session
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 async def prepare_database():
     async with engine_test.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
