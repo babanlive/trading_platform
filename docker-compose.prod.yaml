@@ -6,8 +6,9 @@ services:
     container_name: pg
     image: postgres:latest
     env_file:
-      - .env
-    network_mode: host
+      - .env.example
+    networks:
+      - networkName
 
   web:
     build:
@@ -21,11 +22,17 @@ services:
     volumes:
       - .:/app
     env_file:
-      - .env
+      - .env.example
     environment:
       POSTGRES_DB: trading_platform
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    working_dir: /app/fastapi-application
+    working_dir: /app/products-app
+    ports:
+      - 8000:8000
     command: ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:main_app"]
-    network_mode: host
+    networks:
+      - app-network
+
+networks:
+  app-network:
