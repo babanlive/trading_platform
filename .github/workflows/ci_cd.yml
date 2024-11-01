@@ -1,0 +1,31 @@
+name: CI/CD Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and Run Docker Compose
+        run: |
+          docker compose -f docker-compose.dev.yaml up --build -d
+          docker exec app_fastapi poetry run alembic upgrade head
+          docker exec pg_db psql -U user -d postgres -c "CREATE DATABASE test_db;"
+
+      - name: Run tests
+        run: |
+          docker exec app_fastapi poetry run pytest -v -s tests --disable-warnings
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f docker-compose.dev.yaml down --volumes
