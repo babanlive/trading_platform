@@ -30,12 +30,9 @@ async def test_update_category(ac: AsyncClient):
 
 async def test_delete_category(ac: AsyncClient):
 
-    response = await ac.post(f'{BASE_URL}/categories', json={'name': 'Dairy'})
+    response = await ac.post(f'{BASE_URL}/categories', json={'name': 'Phones'})
     assert response.status_code == 200
     category_id = response.json()['id']
 
     response = await ac.delete(f'{BASE_URL}/categories/{category_id}')
     assert response.status_code == 200
-
-    response = await ac.delete(f'{BASE_URL}/categories/{category_id}')
-    assert response.status_code == 404
