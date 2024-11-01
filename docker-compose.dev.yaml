@@ -3,8 +3,10 @@ services:
     image: postgres
     container_name: pg_db
     restart: always
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: trading
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     networks:
