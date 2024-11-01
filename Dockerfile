@@ -6,7 +6,7 @@ FROM python:3.12-slim as python-base
 # Python environment configuration
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    POETRY_VERSION=1.8.3 \
+    POETRY_VERSION=1.8.4 \
     POETRY_HOME="/opt/poetry" \
     POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
@@ -50,3 +50,4 @@ EXPOSE 8000
 FROM builder-base as dev
 RUN --mount=type=cache,target=/root/.cache \
     poetry install --no-root
+EXPOSE 8000
