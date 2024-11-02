@@ -12,6 +12,7 @@
 
 - Python 3.12
 - FastAPI
+- SQLAlchemy
 - Pre-commit
 - Ruff
 - Postgres
@@ -26,7 +27,7 @@ git clone git@github.com:babanlive/trading_platform.git && cd trading_platform
 ```
 
 2. Создание файла .env
-- Создайте в папке приложения файл `.env` согласно образцу [.env_example](.env.example)
+- Создайте в папке приложения файл `.env` согласно образцу [.env.example](products-app/.env.example)
 
 3. Запуск проекта через Docker
 - Для запуска в режиме разработки выполните команду:
